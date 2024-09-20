@@ -1,0 +1,17 @@
+{
+	"navbar": {
+		"routes": {
+			"mainpage": "主页",
+			"gallery": "画廊",
+			"wiki": "知识库"
+		},
+		"external-link": "相关链接",
+		"external-links": {
+			"bbs": "论坛",
+			"wiki": "文档站",
+			"cloud": "文件中心",
+			"map": "游戏地图",
+			"log": "游戏日志"
+		}
+	}
+}

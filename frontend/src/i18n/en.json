@@ -1,0 +1,24 @@
+{
+	"navbar": {
+		"routes": {
+			"mainpage": "Main Page",
+			"gallery": "Gallery",
+			"wiki": "Documentation",
+			"dash": "Dashboard"
+		},
+		"external-link": "Related Link",
+		"external-links": {
+			"bbs": "Forum",
+			"wiki": "Documentation",
+			"cloud": "File Center",
+			"map": "Game Map",
+			"log": "Game Log"
+		}
+	},
+	"mainpage": {
+		"carousel": {
+			"btn-docs": "Documentation",
+			"btn-join": "Join the server"
+		}
+	}
+}

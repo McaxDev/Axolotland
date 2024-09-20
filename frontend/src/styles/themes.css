@@ -1,0 +1,77 @@
+:root {
+	--main: var(--bs-light);
+	--light: var(--bs-light-bg-subtle);
+	--deep: var(--bs-light-text-emphasis);
+	--subtle: var(--bs-light-border-subtle);
+}
+
+[theme="primary"] {
+	--main: var(--bs-primary);
+	--light: var(--bs-primary-bg-subtle);
+	--deep: var(--bs-primary-text-emphasis);
+	--subtle: var(--bs-primary-border-subtle);
+}
+
+[theme="secondary"] {
+	--main: var(--bs-secondary);
+	--light: var(--bs-secondary-bg-subtle);
+	--deep: var(--bs-secondary-text-emphasis);
+	--subtle: var(--bs-secondary-border-subtle);
+}
+
+[theme="success"] {
+	--main: var(--bs-success);
+	--light: var(--bs-success-bg-subtle);
+	--deep: var(--bs-success-text-emphasis);
+	--subtle: var(--bs-success-border-subtle);
+}
+
+[theme="info"] {
+	--main: var(--bs-info);
+	--light: var(--bs-info-bg-subtle);
+	--deep: var(--bs-info-text-emphasis);
+	--subtle: var(--bs-info-border-subtle);
+}
+
+[theme="warning"] {
+	--main: var(--bs-warning);
+	--light: var(--bs-warning-bg-subtle);
+	--deep: var(--bs-warning-text-emphasis);
+	--subtle: var(--bs-warning-border-subtle);
+}
+
+[theme="danger"] {
+	--main: var(--bs-danger);
+	--light: var(--bs-danger-bg-subtle);
+	--deep: var(--bs-danger-text-emphasis);
+	--subtle: var(--bs-danger-border-subtle);
+}
+
+[theme="light"] {
+	--main: var(--bs-light);
+	--light: var(--bs-light-bg-subtle);
+	--deep: var(--bs-light-text-emphasis);
+	--subtle: var(--bs-light-border-subtle);
+}
+
+[theme="dark"] {
+	--main: var(--bs-dark);
+	--light: var(--bs-dark-bg-subtle);
+	--deep: var(--bs-dark-text-emphasis);
+	--subtle: var(--bs-dark-border-subtle);
+}
+
+.ax-main-color {
+	color: var(--light);
+	background-color: var(--main);
+}
+
+.ax-light-color {
+	color: var(--deep);
+	background-color: var(--light);
+}
+
+.ax-deep-color {
+	color: var(--light);
+	background-color: var(--deep);
+}
