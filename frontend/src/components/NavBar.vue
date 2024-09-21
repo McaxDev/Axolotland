@@ -39,7 +39,7 @@ function setTheme(theme: keyof BaseColorVariant) {
 </script>
 
 <template>
-  <b-navbar toggleable="md" :variant="navVariant" v-b-color-mode="navColorMode" fixed="top" class="navbar">
+  <b-navbar toggleable="md" :variant="navVariant" v-b-color-mode="navColorMode" fixed="top">
 
 		<b-navbar-brand to="/">
       <img src="./assets/axo-logo.png" height="30px" alt="" />

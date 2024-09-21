@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package account;
+
+option go_package = ".;main";
+
+service Account {
+	rpc VerifyJwt (JwtRequest) returns (JwtResponse);
+}
+
+message JwtRequest {
+	string JWT = 1;
+}
+
+message JwtResponse {
+	string JWT = 1;
+	bool Admin = 2;
+	string Avatar = 3;
+	string Telephone = 4;
+	string Email = 5;
+	int32  Money = 6;
+	string WebName = 7;
+	string JavaName = 8;
+	string BedrockName = 9;
+}

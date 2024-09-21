@@ -17,9 +17,3 @@ import NavBar from './components/NavBar.vue';
     <AxLink href="#" class="text-center" target="_blank"> 备案号：豫ICP备2023025148号 </AxLink>
   </footer>
 </template>
-
-<style scoped>
-.navbar {
-	height: 56px;
-}
-</style>

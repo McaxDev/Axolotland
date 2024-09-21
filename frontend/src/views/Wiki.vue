@@ -12,18 +12,19 @@ const currentWiki = computed(() => route.path.split('/')[2].split('.')[0])
 
 // 获取当前页的wiki内容
 const wikiContent = ref<string>('')
-loadWikiContent(currentWiki.value).catch(LogError)
+loadWikiContent(currentWiki.value)
 
 // 获取wiki内容的函数
 async function loadWikiContent(name: string) {
-		const response = await fetchNginxFile<string>(`/wiki/${name}.md`)
+	fetchNginxFile<string>(`/wiki/${name}.md`).then(async response => {
 		wikiContent.value = await marked(response)
+	}).catch(LogError)
 }
 
 // 监听当前页面的变化并重新加载
 watch(
 	currentWiki, (newName) => {
-		loadWikiContent(newName).catch(LogError)
+		loadWikiContent(newName)
 })
 
 </script>

@@ -20,3 +20,7 @@ export async function fetchNginxFile<T>(path: string): Promise<T> {
 	const response = await axios.get<T>(url)
 	return response.data
 }
+
+export const nginxClient = axios.create({
+	baseURL: staticServerAddr.value,
+})
