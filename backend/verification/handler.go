@@ -1,6 +1,10 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 func HttpHandler(c *gin.Context) {
 
@@ -9,10 +13,16 @@ func HttpHandler(c *gin.Context) {
 	switch codetype {
 	case "email":
 		email := c.Param("number")
-		SendEmail(email)
+		if err := SendEmail(email); err != nil {
+			c.JSON(500, Response("邮件发送失败", nil))
+			fmt.Println(err.Error())
+		}
 	case "sms":
 		telephone := c.Param("number")
-		SendSMS(telephone)
+		if err := SendSMS(telephone); err != nil {
+			c.JSON(500, Response("短信发送失败", nil))
+			fmt.Println(err.Error())
+		}
 	case "captcha":
 		SendCaptcha(c)
 	default:

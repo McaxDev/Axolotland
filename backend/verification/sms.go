@@ -3,6 +3,7 @@ package main
 import (
 	"time"
 
+	"github.com/McaxDev/Axolotland/backend/utils"
 	unisms "github.com/apistd/uni-go-sdk/sms"
 )
 
@@ -14,7 +15,7 @@ type smsSentValue struct {
 }
 
 func SendSMS(telephone string) error {
-	authcode := RandomCode()
+	authcode := utils.RandomCode(6)
 	client := unisms.NewClient(config.SMS.ID, config.SMS.Secret)
 
 	message := unisms.BuildMessage()

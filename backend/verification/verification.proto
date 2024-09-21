@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package verification;
+
+option go_package = ".;main";
+
+service Verification {
+	rpc VerifyCode (RpcRequest) returns (RpcResponse);
+}
+
+message RpcRequest {
+	string codetype = 1;
+	string number = 2;
+	string authcode = 3;
+}
+
+message RpcResponse {
+	bool success = 1;
+}
