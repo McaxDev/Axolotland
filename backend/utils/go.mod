@@ -3,6 +3,7 @@ module github.com/McaxDev/Axolotland/backend/utils
 go 1.22.2
 
 require (
+	github.com/McaxDev/Axolotland/backend/account v0.0.0-20240921163155-c293fe472759 // indirect
 	github.com/bytedance/sonic v1.12.2 // indirect
 	github.com/bytedance/sonic/loader v0.2.0 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect

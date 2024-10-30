@@ -2,18 +2,18 @@ syntax = "proto3";
 
 package verification;
 
-option go_package = ".;main";
+option go_package = "./rpc/;rpc";
 
 service Verification {
-	rpc VerifyCode (RpcRequest) returns (RpcResponse);
+	rpc VerifyCode (Request) returns (Response);
 }
 
-message RpcRequest {
+message Request {
 	string codetype = 1;
 	string number = 2;
 	string authcode = 3;
 }
 
-message RpcResponse {
+message Response {
 	bool success = 1;
 }

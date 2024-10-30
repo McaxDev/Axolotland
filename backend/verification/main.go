@@ -5,6 +5,7 @@ import (
 	"net"
 	"time"
 
+	"github.com/McaxDev/Axolotland/backend/verification/rpc"
 	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 	"google.golang.org/grpc"
@@ -23,7 +24,7 @@ func main() {
 		log.Fatalln("failed to listen: " + err.Error())
 	}
 	s := grpc.NewServer()
-	RegisterVerificationServer(s, &Server{})
+	rpc.RegisterVerificationServer(s, &Server{})
 	go func() {
 		if err := s.Serve(lis); err != nil {
 			log.Fatalln("failed to serve: " + err.Error())

@@ -4,7 +4,7 @@
 // - protoc             v3.21.12
 // source: verification.proto
 
-package main
+package rpc
 
 import (
 	context "context"
@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type VerificationClient interface {
-	VerifyCode(ctx context.Context, in *RpcRequest, opts ...grpc.CallOption) (*RpcResponse, error)
+	VerifyCode(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
 }
 
 type verificationClient struct {
@@ -37,9 +37,9 @@ func NewVerificationClient(cc grpc.ClientConnInterface) VerificationClient {
 	return &verificationClient{cc}
 }
 
-func (c *verificationClient) VerifyCode(ctx context.Context, in *RpcRequest, opts ...grpc.CallOption) (*RpcResponse, error) {
+func (c *verificationClient) VerifyCode(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RpcResponse)
+	out := new(Response)
 	err := c.cc.Invoke(ctx, Verification_VerifyCode_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -51,7 +51,7 @@ func (c *verificationClient) VerifyCode(ctx context.Context, in *RpcRequest, opt
 // All implementations must embed UnimplementedVerificationServer
 // for forward compatibility.
 type VerificationServer interface {
-	VerifyCode(context.Context, *RpcRequest) (*RpcResponse, error)
+	VerifyCode(context.Context, *Request) (*Response, error)
 	mustEmbedUnimplementedVerificationServer()
 }
 
@@ -62,7 +62,7 @@ type VerificationServer interface {
 // pointer dereference when methods are called.
 type UnimplementedVerificationServer struct{}
 
-func (UnimplementedVerificationServer) VerifyCode(context.Context, *RpcRequest) (*RpcResponse, error) {
+func (UnimplementedVerificationServer) VerifyCode(context.Context, *Request) (*Response, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method VerifyCode not implemented")
 }
 func (UnimplementedVerificationServer) mustEmbedUnimplementedVerificationServer() {}
@@ -87,7 +87,7 @@ func RegisterVerificationServer(s grpc.ServiceRegistrar, srv VerificationServer)
 }
 
 func _Verification_VerifyCode_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RpcRequest)
+	in := new(Request)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func _Verification_VerifyCode_Handler(srv interface{}, ctx context.Context, dec 
 		FullMethod: Verification_VerifyCode_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(VerificationServer).VerifyCode(ctx, req.(*RpcRequest))
+		return srv.(VerificationServer).VerifyCode(ctx, req.(*Request))
 	}
 	return interceptor(ctx, in, info, handler)
 }

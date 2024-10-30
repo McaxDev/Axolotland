@@ -17,9 +17,11 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "bootstrap-vue-next": "^0.24.12",
+    "echarts": "^5.5.1",
     "marked": "^14.1.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
+    "vue-echarts": "^7.0.3",
     "vue-i18n": "^10.0.0",
     "vue-router": "^4.3.3"
   },

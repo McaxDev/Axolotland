@@ -54,7 +54,7 @@ function setTheme(theme: keyof BaseColorVariant) {
 
 				<!-- 主页 -->
 				<b-nav-item to="/">
-					<img src="./assets/mcicon/mainpage.png" height="20px" alt="" />
+					<img src="@/assets/mcicon/mainpage.png" height="20px" alt="" />
           {{ $t('navbar.routes.mainpage') }}
         </b-nav-item>
 
@@ -62,7 +62,7 @@ function setTheme(theme: keyof BaseColorVariant) {
 				<b-nav-item-dropdown right>
 					<template #button-content>
 						<span @click="router.push('/wiki/index.html')">
-						<img src="./assets/mcicon/wiki.png" height="20px" alt="" />
+						<img src="@/assets/mcicon/wiki.png" height="20px" alt="" />
 						{{ $t('navbar.routes.wiki') }}
 						</span>
 					</template>
@@ -73,13 +73,13 @@ function setTheme(theme: keyof BaseColorVariant) {
 
 				<!-- 画廊 -->
 				<b-nav-item to="/gallery">
-					<img src="./assets/mcicon/gallery.png" height="20px" alt="" />
+					<img src="@/assets/mcicon/gallery.png" height="20px" alt="" />
           {{ $t('navbar.routes.gallery') }}
         </b-nav-item>
 
 				<!-- 仪表板 -->
 				<b-nav-item to="/dash">
-					<img src="./assets/mcicon/dash.png" height="20px" alt="" />
+					<img src="@/assets/mcicon/dash.png" height="20px" alt="" />
           {{ $t('navbar.routes.dash') }}
         </b-nav-item>
       </b-navbar-nav>

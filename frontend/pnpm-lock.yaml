@@ -20,6 +20,9 @@ importers:
       bootstrap-vue-next:
         specifier: ^0.24.12
         version: 0.24.12(vue@3.5.4(typescript@5.4.5))
+      echarts:
+        specifier: ^5.5.1
+        version: 5.5.1
       marked:
         specifier: ^14.1.2
         version: 14.1.2
@@ -29,6 +32,9 @@ importers:
       vue:
         specifier: ^3.4.29
         version: 3.5.4(typescript@5.4.5)
+      vue-echarts:
+        specifier: ^7.0.3
+        version: 7.0.3(@vue/runtime-core@3.5.4)(echarts@5.5.1)(vue@3.5.4(typescript@5.4.5))
       vue-i18n:
         specifier: ^10.0.0
         version: 10.0.0(vue@3.5.4(typescript@5.4.5))
@@ -712,6 +718,9 @@ packages:
     resolution: {integrity: sha512-yS+Q5i3hBf7GBkd4KG8a7eBNNWNGLTaEwwYWUijIYM7zrlYDM0BFXHjjPWlWZ1Rg7UaddZeIDmi9jF3HmqiQ2w==}
     engines: {node: '>=6.0.0'}
 
+  echarts@5.5.1:
+    resolution: {integrity: sha512-Fce8upazaAXUVUVsjgV6mBnGuqgO+JNDlcgF79Dksy4+wgGpQB2lmYoO4TSweFg/mZITdpGHomw/cNBJZj1icA==}
+
   entities@4.5.0:
     resolution: {integrity: sha512-V0hjH4dGPh9Ao5p0MoRY6BVqtwCjhz6vI5LT8AJ55H+4g9/4vbHx1I54fS0XuclLhDHArPQCiMjDxjaL8fPxhw==}
     engines: {node: '>=0.12'}
@@ -1218,6 +1227,9 @@ packages:
     peerDependencies:
       typescript: '>=4.2.0'
 
+  tslib@2.3.0:
+    resolution: {integrity: sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg==}
+
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
 
@@ -1302,6 +1314,17 @@ packages:
   vscode-uri@3.0.8:
     resolution: {integrity: sha512-AyFQ0EVmsOZOlAnxoFOGOq1SQDWAB7C6aqMGS23svWAllfOaxbuFvcT8D1i8z3Gyn8fraVeZNNmN6e9bxxXkKw==}
 
+  vue-demi@0.13.11:
+    resolution: {integrity: sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==}
+    engines: {node: '>=12'}
+    hasBin: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -1311,6 +1334,16 @@ packages:
       vue: ^3.0.0-0 || ^2.6.0
     peerDependenciesMeta:
       '@vue/composition-api':
+        optional: true
+
+  vue-echarts@7.0.3:
+    resolution: {integrity: sha512-/jSxNwOsw5+dYAUcwSfkLwKPuzTQ0Cepz1LxCOpj2QcHrrmUa/Ql0eQqMmc1rTPQVrh2JQ29n2dhq75ZcHvRDw==}
+    peerDependencies:
+      '@vue/runtime-core': ^3.0.0
+      echarts: ^5.5.1
+      vue: ^2.7.0 || ^3.1.1
+    peerDependenciesMeta:
+      '@vue/runtime-core':
         optional: true
 
   vue-eslint-parser@9.4.3:
@@ -1366,6 +1399,9 @@ packages:
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
+
+  zrender@5.6.0:
+    resolution: {integrity: sha512-uzgraf4njmmHAbEUxMJ8Oxg+P3fT04O+9p7gY+wJRVxo8Ge+KmYv0WJev945EH4wFuc4OY2NLXz46FZrWS9xJg==}
 
 snapshots:
 
@@ -1918,6 +1954,11 @@ snapshots:
     dependencies:
       esutils: 2.0.3
 
+  echarts@5.5.1:
+    dependencies:
+      tslib: 2.3.0
+      zrender: 5.6.0
+
   entities@4.5.0: {}
 
   esbuild@0.21.5:
@@ -2437,6 +2478,8 @@ snapshots:
     dependencies:
       typescript: 5.4.5
 
+  tslib@2.3.0: {}
+
   tslib@2.7.0: {}
 
   type-check@0.4.0:
@@ -2494,9 +2537,23 @@ snapshots:
 
   vscode-uri@3.0.8: {}
 
+  vue-demi@0.13.11(vue@3.5.4(typescript@5.4.5)):
+    dependencies:
+      vue: 3.5.4(typescript@5.4.5)
+
   vue-demi@0.14.10(vue@3.5.4(typescript@5.4.5)):
     dependencies:
       vue: 3.5.4(typescript@5.4.5)
+
+  vue-echarts@7.0.3(@vue/runtime-core@3.5.4)(echarts@5.5.1)(vue@3.5.4(typescript@5.4.5)):
+    dependencies:
+      echarts: 5.5.1
+      vue: 3.5.4(typescript@5.4.5)
+      vue-demi: 0.13.11(vue@3.5.4(typescript@5.4.5))
+    optionalDependencies:
+      '@vue/runtime-core': 3.5.4
+    transitivePeerDependencies:
+      - '@vue/composition-api'
 
   vue-eslint-parser@9.4.3(eslint@8.57.0):
     dependencies:
@@ -2553,3 +2610,7 @@ snapshots:
   xml-name-validator@4.0.0: {}
 
   yocto-queue@0.1.0: {}
+
+  zrender@5.6.0:
+    dependencies:
+      tslib: 2.3.0
