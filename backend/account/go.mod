@@ -4,8 +4,8 @@ go 1.22.2
 
 require (
 	filippo.io/edwards25519 v1.1.0 // indirect
-	github.com/McaxDev/Axolotland/backend/utils v0.0.0-20240921163155-c293fe472759 // indirect
-	github.com/McaxDev/Axolotland/backend/verification v0.0.0-20240921163155-c293fe472759 // indirect
+	github.com/McaxDev/Axolotland/backend/utils v0.0.0-20241030025712-84211fb34acc // indirect
+	github.com/McaxDev/Axolotland/backend/verification v0.0.0-20241030025712-84211fb34acc // indirect
 	github.com/apistd/uni-go-sdk v0.0.2 // indirect
 	github.com/bytedance/sonic v1.12.3 // indirect
 	github.com/bytedance/sonic/loader v0.2.1 // indirect

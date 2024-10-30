@@ -3,12 +3,12 @@ package main
 import (
 	"log"
 
-	"github.com/McaxDev/Axolotland/backend/account/rpc"
+	"github.com/McaxDev/Axolotland/backend/verification/rpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var VerifyClient rpc.AccountClient
+var VerifyClient rpc.VerificationClient
 
 func main() {
 
@@ -21,5 +21,5 @@ func main() {
 	}
 	defer VerifyConn.Close()
 
-	VerifyClient = rpc.NewAccountClient(VerifyConn)
+	VerifyClient = rpc.NewVerificationClient(VerifyConn)
 }
