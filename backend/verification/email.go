@@ -13,8 +13,8 @@ import (
 var emailSent = make(map[string]emailSentValue)
 
 type MailData struct {
-	Receiver string
-	AuthCode string
+	Email    string
+	Authcode string
 	Expiry   string
 	Location string
 }
@@ -39,8 +39,8 @@ func SendEmail(email string) error {
 	}
 
 	mailBody, err := getMailBody(&MailData{
-		Receiver: email,
-		AuthCode: authcode,
+		Email:    email,
+		Authcode: authcode,
 		Expiry:   expiry.Format("2006-01-02 15:04"),
 		Location: region,
 	})
@@ -86,7 +86,7 @@ func getMailBody(maildata *MailData) ([]byte, error) {
 	var buffer bytes.Buffer
 	buffer.Write([]byte(
 		"From: Axolotland Gaming Club <axolotland@163.com>\r\n" +
-			"To: " + maildata.Receiver + "\r\n" +
+			"To: " + maildata.Email + "\r\n" +
 			"Subject: 验证码邮件\r\n" +
 			"MIME-Version: 1.0\r\n" +
 			"Content-Type: text/html; charset=\"UTF-8\"\r\n" +

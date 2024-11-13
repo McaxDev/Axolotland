@@ -14,6 +14,7 @@
 }
 ```
 #### 注册
+* 路径：`/account/signup`
 * 请求体：
 ```json
 {
@@ -32,6 +33,7 @@
 }
 ```
 #### 登录
+* 路径：`/account/login`
 * 请求体：
 ```json
 {
@@ -48,6 +50,7 @@
 }
 ```
 #### 获取用户信息
+* 路径：`/account/get/userinfo`
 * 请求头带JWT
 * 响应体：
 ```json
@@ -65,3 +68,11 @@
     "dstName": "nerakolo"
 }
 ```
+#### 获取Captcha验证码
+* 路径：`/verify/captcha`
+* 响应头：`X-Captcha-Id: jc8u9wty8jcw90t35`
+* 响应头：`Content-Type: image/png`
+#### 获取邮件验证码
+* 路径：`/verify/email/nerakolo@outlook.com`
+#### 获取手机验证码
+* 路径：`/verify/sms/12312341234`
