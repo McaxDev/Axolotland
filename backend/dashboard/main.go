@@ -94,7 +94,6 @@ func main() {
 		}
 		filename := result.Val() + ".json"
 		path := filepath.Join(servers[server], "world/stats/", filename)
-		fmt.Println(path)
 		file, err := os.Open(path)
 		if err != nil {
 			ctx.AbortWithStatusJSON(500, gin.H{"msg": "打开文件失败"})
