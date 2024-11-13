@@ -5,6 +5,7 @@
 * 请求头加上`Authorization: Bearer 234f62.236f3245.345vy3`
 ### HTTP协议
 * 请求体都是application/json类型，而且对象的键，大小写皆可。例如，如果文档写的键是`Username`，那么`username`或`UserName`或`USERNAME`皆可，但`user_name`就不行。
+* 响应体也是application/json类型，但对象的键是大小写严格的。例如，如果文档写`userId`，那么`userID`或`userid`或`UserId`或`user_id`都不行。
 * 响应体默认是此结构，后文只解释`data`部分：
 ```json
 {
