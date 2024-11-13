@@ -14,12 +14,14 @@ message JwtRequest {
 
 message JwtResponse {
 	string JWT = 1;
-	bool Admin = 2;
+	string Username = 2;
 	string Avatar = 3;
-	string Telephone = 4;
-	string Email = 5;
-	int32  Money = 6;
-	string WebName = 7;
-	string JavaName = 8;
+	string Profile = 4;
+	bool Admin = 5;
+	int32 Money = 6;
+	string Email = 7;
+	string Telephone = 8;
 	string BedrockName = 9;
+	string JaveName = 10;
+	string DstName = 11;
 }

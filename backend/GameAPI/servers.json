@@ -1,0 +1,50 @@
+{
+	"servers": [
+		{
+			"name": "paper",
+			"game": "java",
+			"path": "/srv/paper/"
+		},
+		{
+			"name": "fabric",
+			"game": "java",
+			"path": "/srv/fabric/"
+		},
+		{
+			"name": "bedrock",
+			"game": "bedrock",
+			"path": "/srv/bedrock/",
+			"backup": {
+				"frequency": "0 0 * * *",
+				"limit": 5
+			}
+		},
+		{
+			"name": "dst",
+			"game": "dst",
+			"path": "/srv/dst/",
+			"backup": {
+				"frequency": "0 0 * * *",
+				"limit": 5
+			}
+		},
+		{
+			"name": "terraria",
+			"game": "terraria",
+			"path": "/srv/terraria/",
+			"backup": {
+				"frequency": "0 0 * * *",
+				"limit": 5
+			}
+		},
+		{
+			"name": "stardew",
+			"game": "stardew",
+			"path": "/srv/stardew/",
+			"backup": {
+				"frequency": "0 0 * * *",
+				"limit": 5
+			}
+		}
+	]
+}

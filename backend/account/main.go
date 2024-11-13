@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/McaxDev/Axolotland/backend/verification/rpc"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -22,4 +23,23 @@ func main() {
 	defer VerifyConn.Close()
 
 	VerifyClient = rpc.NewVerificationClient(VerifyConn)
+
+	router := gin.Default()
+
+	router.GET("/get/userinfo", GetUserInfo)
+	router.POST("/set/telephone", SetTelephone)
+	router.POST("/signup", Signup)
+	router.POST("/login", Login)
+
+	if Config.SSL.Certificate == "" {
+		err = router.Run(":" + Config.Port)
+	} else {
+		err = router.RunTLS(
+			":"+Config.Port, Config.SSL.Certificate, Config.SSL.Private,
+		)
+	}
+
+	if err != nil {
+		log.Fatalf("HTTP服务器开启失败: %v\n", err)
+	}
 }
