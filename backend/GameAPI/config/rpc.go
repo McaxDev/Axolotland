@@ -6,7 +6,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var AccountClient *rpc.AccountClient
+var AccountClient rpc.AccountClient
 
 func GRPCInit() error {
 

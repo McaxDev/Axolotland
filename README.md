@@ -7,6 +7,9 @@
 * 互通服是`paper`，生电服是`fabric`，基岩服是`bedrock`，饥荒服是`dst`，星露谷物语服是`stardew`，泰拉瑞亚服是`terraria`
 #### 需要管理员权限
 * 要求用户的个人信息的`admin`为true
+#### 里面带`:`的路径
+* 表示那个路径是变量，例如`/account/set/:email`可以是`/account/set/nerakolo@outlook.com`，变量的意义在下面列出。
+* `email`表示邮箱，`telephone`表示手机号。
 ### HTTP协议（子域名为api.mcax.cn）
 * 请求体都是application/json类型，而且对象的键，大小写皆可。例如，如果文档写的键是`Username`，那么`username`或`UserName`或`USERNAME`皆可，但`user_name`就不行。
 * 响应体也是application/json类型，但对象的键是大小写严格的。例如，如果文档写`userId`，那么`userID`或`userid`或`UserId`或`user_id`都不行。
@@ -56,7 +59,7 @@
 #### 获取用户信息 GET
 * 路径：`/account/get/userinfo`
 * 请求头带JWT
-* 响应体：
+* 响应体data部分：
 ```json
 {
     "userId": 123,
@@ -72,18 +75,47 @@
     "dstName": "nerakolo"
 }
 ```
+#### 获取用户设置 GET
+* 路径：`/account/get/settings`
+* 请求头带JWT
+* 响应体data部分：
+```json
+[
+    {
+        "name": "enableMfa",
+        "comment": "启用MFA验证",
+        "value": true
+    },
+    {
+        "name": "mfaUseEmail",
+        "comment": "开启则用Email作为MFA方式，关闭则为SMS",
+        "value": false
+    }
+]
+```
+#### 更新用户设置 POST
+* 路径：`/account/set/settings`
+* 请求头带JWT
+* 请求体：
+```json
+{
+    "Name": "enableMfa",
+    "Value": true
+}
+```
 #### 获取Captcha验证码 GET
 * 路径：`/verify/captcha`
 * 响应头：`X-Captcha-Id: jc8u9wty8jcw90t35`、`Content-Type: image/png`
 #### 获取邮件验证码 GET
-* 路径：`/verify/email/nerakolo@outlook.com`
+* 路径：`/verify/email/:email`
 #### 获取手机验证码 GET
-* 路径：`/verify/sms/12312341234`
+* 路径：`/verify/sms/:telephone`
 #### 获取特定玩家的统计信息 GET
-* 路径：`/dash/player/Nerakolo`
-* 查询字符串参数：`server=paper`，见上文“服务器ID”
+* 路径：`/dash/player/:player_name`
+* 查询字符串参数：`server=服务器ID`
+* 响应体data部分：见`docs/result.json`
 #### 获取特定统计信息的排行榜 GET
-* 路径：`/dash/:stat`，例如`/dashboard/break`，`:stat`包括`mined`,`picked_up`,`crafted`,`broken`,`play_time`,`deaths`,`mob_kills`,`damage_dealt`,`drop`
+* 路径：`/dash/:stat`，`:stat`包括`mined`,`picked_up`,`crafted`,`broken`,`play_time`,`deaths`,`mob_kills`,`damage_dealt`,`drop`
 * 查询字符串参数：`server=paper`，见上文“服务器ID”
 * 响应体data部分：
 ```json

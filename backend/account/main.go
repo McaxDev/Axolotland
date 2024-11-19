@@ -27,6 +27,7 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/get/userinfo", GetUserInfo)
+	router.GET("/get/settings", GetSettings)
 	router.POST("/set/telephone", SetTelephone)
 	router.POST("/signup", Signup)
 	router.POST("/login", Login)

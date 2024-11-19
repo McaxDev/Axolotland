@@ -19,9 +19,10 @@ message JwtResponse {
 	string Profile = 4;
 	bool Admin = 5;
 	int32 Money = 6;
-	string Email = 7;
-	string Telephone = 8;
-	string BedrockName = 9;
-	string JaveName = 10;
-	string DstName = 11;
+	int32 Setting = 7;
+	string Email = 8;
+	string Telephone = 9;
+	string BedrockName = 10;
+	string JaveName = 11;
+	string DstName = 12;
 }

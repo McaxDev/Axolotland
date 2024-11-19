@@ -1,10 +1,13 @@
 package config
 
-var servers []struct {
-	Name   string
-	Game   string
-	Path   string
-	Backup struct {
+var Servers struct {
+	Servers []struct {
+		Name   string
+		Game   string
+		Path   string
+		Backup string
+	}
+	Options []struct {
 		Frequency string
 		Limit     int
 	}
