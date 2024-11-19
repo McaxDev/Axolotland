@@ -28,4 +28,11 @@ func GameBackup(c *gin.Context) {
 		return
 	}
 
+	var server *config.Server
+	for index := range config.Servers {
+		if temp := &config.Servers[index]; temp.Name == request.Server {
+			server = temp
+		}
+	}
+
 }

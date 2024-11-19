@@ -6,7 +6,7 @@
 #### 服务器ID 枚举类型
 * 互通服是`paper`，生电服是`fabric`，基岩服是`bedrock`，饥荒服是`dst`，星露谷物语服是`stardew`，泰拉瑞亚服是`terraria`
 #### 需要管理员权限
-* 要求用户的个人信息的`admin`为true
+* 要求提供JWT的同时，用户的个人信息的`admin`为true
 #### 里面带`:`的路径
 * 表示那个路径是变量，例如`/account/set/:email`可以是`/account/set/nerakolo@outlook.com`，变量的意义在下面列出。
 * `email`表示邮箱，`telephone`表示手机号。
@@ -37,6 +37,17 @@
 ```json
 {
     "token": "Bearer 432f5.342f52.234vf523"
+}
+```
+#### 注销账号 POST
+* 路径：`/account/signout`
+* 请求头带JWT
+* 请求体：
+```json
+{
+    "Codetype": "验证方式，'telephone'或'email'",
+    "Number": "手机号码或邮箱号码",
+    "Authcode": "收到的验证码"
 }
 ```
 #### 登录 POST
@@ -129,6 +140,29 @@
         "Member": "Bestcb233"
     }
 ]
+```
+#### 立即备份服务器 POST
+* 路径：`/game/backup`
+* 需要管理员权限
+* 请求体：
+```json
+{
+    "Server": "服务器ID，如'fabric'"
+}
+```
+#### 向服务器发送命令 POST
+* 路径：`/game/command`
+* 需要管理员权限
+* 请求体：
+```json
+{
+    "Server": "服务器ID",
+    "Command": "/list"
+}
+```
+* 响应体data部分：
+```json
+"当前在线1人：Nerakolo"
 ```
 
 ### HTTP协议（子域名为static.mcax.cn）

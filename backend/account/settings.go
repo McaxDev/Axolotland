@@ -5,13 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetSettings(c *gin.Context) {
-
-	user, err := GetUser(c.GetHeader("Authorization"))
-	if err != nil {
-		c.JSON(400, utils.Resp("身份验证失败", err))
-		return
-	}
+func GetSettings(user *User, c *gin.Context) {
 
 	type SettingsStruct struct {
 		Name    string
@@ -31,13 +25,7 @@ func GetSettings(c *gin.Context) {
 	c.JSON(200, settings)
 }
 
-func SetSettings(c *gin.Context) {
-
-	user, err := GetUser(c.GetHeader("Authorization"))
-	if err != nil {
-		c.JSON(400, utils.Resp("身份验证失败", err))
-		return
-	}
+func SetSettings(user *User, c *gin.Context) {
 
 	var request struct {
 		Name  string

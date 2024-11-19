@@ -4,7 +4,10 @@ go 1.22.7
 
 toolchain go1.23.3
 
-replace github.com/McaxDev/Axolotland/backend/account => ../account
+replace (
+	github.com/McaxDev/Axolotland/backend/account => ../account
+	github.com/McaxDev/Axolotland/backend/utils => ../utils
+)
 
 require (
 	github.com/docker/docker v27.3.1+incompatible
