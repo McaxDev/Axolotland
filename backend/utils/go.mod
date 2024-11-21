@@ -7,12 +7,13 @@ toolchain go1.23.3
 replace github.com/McaxDev/Axolotland/backend/verification => ../verification/
 
 require (
-	github.com/McaxDev/Axolotland/backend/verification v0.0.0-00010101000000-000000000000
+	github.com/McaxDev/Axolotland/backend/verification v0.0.0-20241030032851-0d1e5b7a0a85
 	github.com/gin-gonic/gin v1.10.0
 	google.golang.org/grpc v1.68.0
 )
 
 require (
+	github.com/McaxDev/Axolotland/backend/account v0.0.0-20241119203443-48e10c1c58dd // indirect
 	github.com/bytedance/sonic v1.12.4 // indirect
 	github.com/bytedance/sonic/loader v0.2.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
@@ -37,7 +38,7 @@ require (
 	golang.org/x/net v0.31.0 // indirect
 	golang.org/x/sys v0.27.0 // indirect
 	golang.org/x/text v0.20.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20241104194629-dd2ea8efbc28 // indirect
-	google.golang.org/protobuf v1.35.1 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241118233622-e639e219e697 // indirect
+	google.golang.org/protobuf v1.35.2 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

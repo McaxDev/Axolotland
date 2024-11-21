@@ -37,10 +37,10 @@ type User struct {
 	Profile     string
 	Admin       bool
 	Money       int
-	Setting     int
+	Checkin     int64
+	Setting     int64
 	Email       string
 	Telephone   string
 	BedrockName string
 	JavaName    string
-	DstName     string
 }

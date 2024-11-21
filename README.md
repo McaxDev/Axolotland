@@ -1,4 +1,17 @@
 ## 开发文档
+### 后端相关
+#### 架构
+* 后端采用微服务架构，具体微服务如下：
+  * auth：为其他微服务提供Captcha、Email、SMS验证接口。
+  * gameapi：负责提供与游戏服务器交互的接口。
+  * account：只负责Web应用的账号相关。
+    * 依赖于auth微服务。
+  * usergame：负责让Web用户与游戏服务器交互。
+    * 依赖于gameapi和account和auth微服务。
+  * test：负责处理入服问卷相关。
+    * 依赖于auth和account微服务。
+  * dash：负责提供玩家数据查询服务。
+    * 依赖于account微服务。
 ### HTTP协议注释
 * 有一些规则是不断重复说明的，在这一部分列出。
 #### 请求头带JWT
@@ -114,6 +127,19 @@
     "Value": true
 }
 ```
+#### 每日签到 GET
+* 路径：`/account/checkin`
+* 请求头带JWT
+#### 查看签到历史 GET
+* 路径：`/account/get/checkin`
+* 请求头带JWT
+* 响应体data部分：
+```json
+[
+    {"Date": 1, "Status": true},
+    {"Date": 2, "Status": false}
+]
+```
 #### 获取Captcha验证码 GET
 * 路径：`/verify/captcha`
 * 响应头：`X-Captcha-Id: jc8u9wty8jcw90t35`、`Content-Type: image/png`
@@ -152,7 +178,7 @@
 ```
 #### 向服务器发送命令 POST
 * 路径：`/game/command`
-* 需要管理员权限
+* 除了部分命令外，其他命令都需要管理员权限
 * 请求体：
 ```json
 {

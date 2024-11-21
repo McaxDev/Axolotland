@@ -8,23 +8,22 @@ var SetMapTable = map[string]struct {
 	"mfaUseEmail": {1, "开启使用邮箱作为MFA方式，关闭则使用SMS"},
 }
 
-func GetBitByIndex(value, index int) bool {
-	return value&(1<<index) == 1
+func GetBitByIndex(data int64, index int) bool {
+	return data&(1<<(index%64)) == 1
 }
 
-func GetBitByName(value int, name string) bool {
-	return GetBitByIndex(value, SetMapTable[name].Index)
+func GetBitByName(data int64, name string) bool {
+	return GetBitByIndex(data, SetMapTable[name].Index)
 }
 
-func UpdateBitByIndex(bitmask, index int, value bool) int {
+func UpdateBitByIndex(data *int64, index int, value bool) {
 	if value {
-		bitmask |= (1 << index)
+		*data |= (1 << (index % 64))
 	} else {
-		bitmask &= ^(1 << index)
+		*data &= ^(1 << (index % 64))
 	}
-	return bitmask
 }
 
-func UpdateBitByName(bitmask int, name string, value bool) int {
-	return UpdateBitByIndex(bitmask, SetMapTable[name].Index, value)
+func UpdateBitByName(data *int64, name string, value bool) {
+	UpdateBitByIndex(data, SetMapTable[name].Index, value)
 }

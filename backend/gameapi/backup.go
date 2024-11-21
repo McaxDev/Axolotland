@@ -1,4 +1,4 @@
-package backup
+package main
 
 import (
 	"os"
@@ -8,26 +8,23 @@ import (
 )
 
 // 备份游戏服务器的存档
-func WorldBackup(
-	name string, game string, path string, limit int,
-) error {
+func (server *Server) WorldBackup() error {
 
 	// 关闭容器
-	if err := StopContainer(name); err != nil {
+	if err := StopContainer(server.Name); err != nil {
 		return err
 	}
 
 	// 检查备份目录是否存在
-	backupFolder := filepath.Join(path, "backup/")
-	if err := CreateFolder(backupFolder); err != nil {
+	if err := CreateFolder(server.Backup.Path); err != nil {
 		return err
 	}
 
 	// 备份世界
 	if err := Compressor.Archive(
-		[]string{filepath.Join(path, getWorldPath(game))},
+		[]string{server.Path.World},
 		filepath.Join(
-			backupFolder,
+			server.Backup.Path,
 			time.Now().Format("2006-01-02_15:04:05")+".tar.gz",
 		),
 	); err != nil {
@@ -35,7 +32,7 @@ func WorldBackup(
 	}
 
 	// 获取所有备份
-	files, err := os.ReadDir(backupFolder)
+	files, err := os.ReadDir(server.Backup.Path)
 	if err != nil {
 		return err
 	}
@@ -57,9 +54,9 @@ func WorldBackup(
 
 	// 删除多余备份
 	for index, file := range files {
-		if index >= limit {
+		if index >= server.Backup.Limit {
 			if err := os.Remove(
-				filepath.Join(path, file.Name()),
+				filepath.Join(server.Backup.Path, file.Name()),
 			); err != nil {
 				return err
 			}
@@ -67,7 +64,7 @@ func WorldBackup(
 	}
 
 	// 开启容器
-	if err := StartContainer(name); err != nil {
+	if err := StartContainer(server.Name); err != nil {
 		return err
 	}
 

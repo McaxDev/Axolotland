@@ -1,24 +1,23 @@
-package backup
+package main
 
 import (
 	"context"
 	"fmt"
 	"os"
 
-	"github.com/McaxDev/Axolotland/backend/GameAPI/config"
 	"github.com/docker/docker/api/types/container"
 )
 
 // 开启容器
 func StartContainer(name string) error {
-	return config.DockerClient.ContainerStart(
+	return DockerClient.ContainerStart(
 		context.Background(), name, container.StartOptions{},
 	)
 }
 
 // 关闭容器
 func StopContainer(name string) error {
-	return config.DockerClient.ContainerStop(
+	return DockerClient.ContainerStop(
 		context.Background(), name, container.StopOptions{},
 	)
 }
@@ -32,5 +31,17 @@ func CreateFolder(path string) error {
 	} else if !result.IsDir() {
 		return fmt.Errorf("%s is not a directory", path)
 	}
+	return nil
+}
+
+// 根据服务器代号找到服务器
+func GetServerByName(name string) *Server {
+
+	for index := range Servers {
+		if temp := &Servers[index]; temp.Name == name {
+			return temp
+		}
+	}
+
 	return nil
 }
