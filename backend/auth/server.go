@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 
-	"github.com/McaxDev/Axolotland/backend/verification/rpc"
+	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"github.com/dchest/captcha"
 )
 

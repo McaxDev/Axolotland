@@ -1,4 +1,4 @@
-module github.com/McaxDev/Axolotland/backend/verification
+module github.com/McaxDev/Axolotland/backend/auth
 
 go 1.22.7
 

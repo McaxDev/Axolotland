@@ -1,18 +1,15 @@
 package main
 
 import (
-	"github.com/McaxDev/Axolotland/backend/account/rpc"
-	"github.com/McaxDev/Axolotland/backend/gameapi/servers"
+	"context"
+
+	accountrpc "github.com/McaxDev/Axolotland/backend/account/rpc"
+	gameapirpc "github.com/McaxDev/Axolotland/backend/gameapi/rpc"
 	"github.com/McaxDev/Axolotland/backend/utils"
 	"github.com/gin-gonic/gin"
 )
 
-func GameBackup(user *rpc.JwtResponse, c *gin.Context) {
-
-	if !user.Admin {
-		c.JSON(400, utils.Resp("你不是管理员", nil))
-		return
-	}
+func WorldBackup(user *accountrpc.JwtResponse, c *gin.Context) {
 
 	var request struct {
 		Server string
@@ -22,10 +19,14 @@ func GameBackup(user *rpc.JwtResponse, c *gin.Context) {
 		return
 	}
 
-	server := servers.GetServerByName(request.Server)
-	if server == nil {
-		c.JSON(400, utils.Resp("不存在这个服务器", nil))
+	response, err := GameapiClient.WorldBackup(
+		context.Background(),
+		&gameapirpc.BackupRequest{Server: request.Server},
+	)
+	if err != nil || !response.Success {
+		c.JSON(500, utils.Resp("备份失败", err))
 		return
 	}
 
+	c.JSON(200, utils.Resp("备份成功", nil))
 }

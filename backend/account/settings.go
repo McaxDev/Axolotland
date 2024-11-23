@@ -36,8 +36,8 @@ func SetSettings(user *User, c *gin.Context) {
 		return
 	}
 
-	user.Setting = utils.UpdateBitByName(
-		user.Setting, request.Name, request.Value,
+	utils.UpdateBitByName(
+		&user.Setting, request.Name, request.Value,
 	)
 
 	if err := DB.Updates(&user).Error; err != nil {

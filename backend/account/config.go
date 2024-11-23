@@ -3,11 +3,11 @@ package main
 import "os"
 
 var Config struct {
-	VerifyAddr string
-	JwtKey     string
-	Port       string
-	DB         DBConfig
-	SSL        SSLConfig
+	AuthAddr string
+	JwtKey   string
+	Port     string
+	DB       DBConfig
+	SSL      SSLConfig
 }
 
 type DBConfig struct {
@@ -25,7 +25,7 @@ type SSLConfig struct {
 
 func LoadConfig() {
 
-	Config.VerifyAddr = os.Getenv("VERIFY_ADDR")
+	Config.AuthAddr = os.Getenv("AUTH_ADDR")
 	Config.JwtKey = os.Getenv("JWT_KEY")
 	Config.Port = os.Getenv("PORT")
 

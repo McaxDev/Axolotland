@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package verification;
+package auth;
 
 option go_package = "./rpc/;rpc";
 
-service Verification {
-	rpc VerifyCode (Request) returns (Response);
+service Auth {
+	rpc Auth (Request) returns (Response);
 }
 
 message Request {

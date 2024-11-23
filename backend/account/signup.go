@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
+	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"github.com/McaxDev/Axolotland/backend/utils"
-	"github.com/McaxDev/Axolotland/backend/verification/rpc"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,7 +38,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	MailResponse, err := VerifyClient.VerifyCode(
+	MailResponse, err := AuthClient.Auth(
 		context.Background(),
 		&rpc.Request{
 			Codetype: "email",
@@ -52,7 +52,7 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	CaptchaResponse, err := VerifyClient.VerifyCode(
+	CaptchaResponse, err := AuthClient.Auth(
 		context.Background(),
 		&rpc.Request{
 			Codetype: "captcha",

@@ -19,14 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Account_VerifyJwt_FullMethodName = "/account.Account/VerifyJwt"
+	Account_UpdateJWT_FullMethodName   = "/account.Account/UpdateJWT"
+	Account_GetUserinfo_FullMethodName = "/account.Account/GetUserinfo"
 )
 
 // AccountClient is the client API for Account service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AccountClient interface {
-	VerifyJwt(ctx context.Context, in *JwtRequest, opts ...grpc.CallOption) (*JwtResponse, error)
+	UpdateJWT(ctx context.Context, in *JWT, opts ...grpc.CallOption) (*JWT, error)
+	GetUserinfo(ctx context.Context, in *JWT, opts ...grpc.CallOption) (*Userinfo, error)
 }
 
 type accountClient struct {
@@ -37,10 +39,20 @@ func NewAccountClient(cc grpc.ClientConnInterface) AccountClient {
 	return &accountClient{cc}
 }
 
-func (c *accountClient) VerifyJwt(ctx context.Context, in *JwtRequest, opts ...grpc.CallOption) (*JwtResponse, error) {
+func (c *accountClient) UpdateJWT(ctx context.Context, in *JWT, opts ...grpc.CallOption) (*JWT, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(JwtResponse)
-	err := c.cc.Invoke(ctx, Account_VerifyJwt_FullMethodName, in, out, cOpts...)
+	out := new(JWT)
+	err := c.cc.Invoke(ctx, Account_UpdateJWT_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *accountClient) GetUserinfo(ctx context.Context, in *JWT, opts ...grpc.CallOption) (*Userinfo, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Userinfo)
+	err := c.cc.Invoke(ctx, Account_GetUserinfo_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +63,8 @@ func (c *accountClient) VerifyJwt(ctx context.Context, in *JwtRequest, opts ...g
 // All implementations must embed UnimplementedAccountServer
 // for forward compatibility.
 type AccountServer interface {
-	VerifyJwt(context.Context, *JwtRequest) (*JwtResponse, error)
+	UpdateJWT(context.Context, *JWT) (*JWT, error)
+	GetUserinfo(context.Context, *JWT) (*Userinfo, error)
 	mustEmbedUnimplementedAccountServer()
 }
 
@@ -62,8 +75,11 @@ type AccountServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAccountServer struct{}
 
-func (UnimplementedAccountServer) VerifyJwt(context.Context, *JwtRequest) (*JwtResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method VerifyJwt not implemented")
+func (UnimplementedAccountServer) UpdateJWT(context.Context, *JWT) (*JWT, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateJWT not implemented")
+}
+func (UnimplementedAccountServer) GetUserinfo(context.Context, *JWT) (*Userinfo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetUserinfo not implemented")
 }
 func (UnimplementedAccountServer) mustEmbedUnimplementedAccountServer() {}
 func (UnimplementedAccountServer) testEmbeddedByValue()                 {}
@@ -86,20 +102,38 @@ func RegisterAccountServer(s grpc.ServiceRegistrar, srv AccountServer) {
 	s.RegisterService(&Account_ServiceDesc, srv)
 }
 
-func _Account_VerifyJwt_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(JwtRequest)
+func _Account_UpdateJWT_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JWT)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AccountServer).VerifyJwt(ctx, in)
+		return srv.(AccountServer).UpdateJWT(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Account_VerifyJwt_FullMethodName,
+		FullMethod: Account_UpdateJWT_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AccountServer).VerifyJwt(ctx, req.(*JwtRequest))
+		return srv.(AccountServer).UpdateJWT(ctx, req.(*JWT))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Account_GetUserinfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(JWT)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AccountServer).GetUserinfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Account_GetUserinfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AccountServer).GetUserinfo(ctx, req.(*JWT))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -112,8 +146,12 @@ var Account_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*AccountServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "VerifyJwt",
-			Handler:    _Account_VerifyJwt_Handler,
+			MethodName: "UpdateJWT",
+			Handler:    _Account_UpdateJWT_Handler,
+		},
+		{
+			MethodName: "GetUserinfo",
+			Handler:    _Account_GetUserinfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

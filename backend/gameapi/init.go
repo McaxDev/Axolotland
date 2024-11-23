@@ -2,20 +2,28 @@ package main
 
 import (
 	"encoding/json"
+	"time"
 
-	"github.com/McaxDev/Axolotland/backend/account/rpc"
+	"github.com/McaxDev/Axolotland/backend/gameapi/rpc"
 	"github.com/McaxDev/Axolotland/backend/utils"
 	"github.com/docker/docker/client"
 	"github.com/mholt/archiver/v3"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 )
 
 var (
-	DockerClient  *client.Client
-	Compressor    *archiver.TarGz
-	AccountClient rpc.AccountClient
+	DockerClient *client.Client
+	Compressor   *archiver.TarGz
+	BindCodes    map[string]BindCodesValue
 )
+
+type BindCodesValue struct {
+	Authcode string
+	Expiry   time.Time
+}
+
+type RPCServer struct {
+	rpc.UnimplementedGameAPIServer
+}
 
 func Init() error {
 	var err error
@@ -39,17 +47,6 @@ func Init() error {
 	); err != nil {
 		return err
 	}
-
-	AccountConnect, err := grpc.NewClient(
-		config.GRPCAddr.Account,
-		grpc.WithTransportCredentials(insecure.NewCredentials()),
-	)
-	if err != nil {
-		return err
-	}
-	defer AccountConnect.Close()
-
-	AccountClient = rpc.NewAccountClient(AccountConnect)
 
 	return nil
 }

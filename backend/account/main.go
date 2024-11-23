@@ -3,38 +3,27 @@ package main
 import (
 	"log"
 
-	"github.com/McaxDev/Axolotland/backend/verification/rpc"
-	"github.com/gin-gonic/gin"
+	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-var VerifyClient rpc.VerificationClient
+var AuthClient rpc.AuthClient
 
 func main() {
 
-	VerifyConn, err := grpc.NewClient(
-		Config.VerifyAddr,
+	AuthConn, err := grpc.NewClient(
+		Config.AuthAddr,
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 	)
 	if err != nil {
 		log.Fatalf("Failed to connect: %v\n", err)
 	}
-	defer VerifyConn.Close()
+	defer AuthConn.Close()
 
-	VerifyClient = rpc.NewVerificationClient(VerifyConn)
+	AuthClient = rpc.NewAuthClient(AuthConn)
 
-	router := gin.Default()
-
-	router.GET("/get/userinfo", AuthJwtMiddle(GetUserInfo))
-	router.GET("/get/settings", AuthJwtMiddle(GetSettings))
-	router.POST("/set/contact", AuthJwtMiddle(SetContact))
-	router.POST("/set/username", AuthJwtMiddle(SetUsername))
-	router.POST("/set/password", ResetPassword)
-	router.POST("/set/userinfo", AuthJwtMiddle(SetUserInfo))
-	router.POST("/signup", Signup)
-	router.POST("/signout", AuthJwtMiddle(Signout))
-	router.POST("/login", Login)
+	router := GetRouter()
 
 	if Config.SSL.Certificate == "" {
 		err = router.Run(":" + Config.Port)

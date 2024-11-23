@@ -5,7 +5,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/McaxDev/Axolotland/backend/verification/rpc"
+	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 	"google.golang.org/grpc"

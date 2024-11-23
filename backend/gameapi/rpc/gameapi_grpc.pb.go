@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v3.21.12
-// source: game_api.proto
+// source: gameapi.proto
 
 package rpc
 
@@ -19,14 +19,18 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	GameAPI_SendCmd_FullMethodName = "/GameAPI.GameAPI/SendCmd"
+	GameAPI_WorldBackup_FullMethodName = "/GameAPI.GameAPI/WorldBackup"
+	GameAPI_SendCmd_FullMethodName     = "/GameAPI.GameAPI/SendCmd"
+	GameAPI_GameBind_FullMethodName    = "/GameAPI.GameAPI/GameBind"
 )
 
 // GameAPIClient is the client API for GameAPI service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GameAPIClient interface {
+	WorldBackup(ctx context.Context, in *BackupRequest, opts ...grpc.CallOption) (*BackupResponse, error)
 	SendCmd(ctx context.Context, in *CmdRequest, opts ...grpc.CallOption) (*CmdResponse, error)
+	GameBind(ctx context.Context, in *BindRequest, opts ...grpc.CallOption) (*BindResponse, error)
 }
 
 type gameAPIClient struct {
@@ -35,6 +39,16 @@ type gameAPIClient struct {
 
 func NewGameAPIClient(cc grpc.ClientConnInterface) GameAPIClient {
 	return &gameAPIClient{cc}
+}
+
+func (c *gameAPIClient) WorldBackup(ctx context.Context, in *BackupRequest, opts ...grpc.CallOption) (*BackupResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BackupResponse)
+	err := c.cc.Invoke(ctx, GameAPI_WorldBackup_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *gameAPIClient) SendCmd(ctx context.Context, in *CmdRequest, opts ...grpc.CallOption) (*CmdResponse, error) {
@@ -47,11 +61,23 @@ func (c *gameAPIClient) SendCmd(ctx context.Context, in *CmdRequest, opts ...grp
 	return out, nil
 }
 
+func (c *gameAPIClient) GameBind(ctx context.Context, in *BindRequest, opts ...grpc.CallOption) (*BindResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(BindResponse)
+	err := c.cc.Invoke(ctx, GameAPI_GameBind_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GameAPIServer is the server API for GameAPI service.
 // All implementations must embed UnimplementedGameAPIServer
 // for forward compatibility.
 type GameAPIServer interface {
+	WorldBackup(context.Context, *BackupRequest) (*BackupResponse, error)
 	SendCmd(context.Context, *CmdRequest) (*CmdResponse, error)
+	GameBind(context.Context, *BindRequest) (*BindResponse, error)
 	mustEmbedUnimplementedGameAPIServer()
 }
 
@@ -62,8 +88,14 @@ type GameAPIServer interface {
 // pointer dereference when methods are called.
 type UnimplementedGameAPIServer struct{}
 
+func (UnimplementedGameAPIServer) WorldBackup(context.Context, *BackupRequest) (*BackupResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method WorldBackup not implemented")
+}
 func (UnimplementedGameAPIServer) SendCmd(context.Context, *CmdRequest) (*CmdResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method SendCmd not implemented")
+}
+func (UnimplementedGameAPIServer) GameBind(context.Context, *BindRequest) (*BindResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GameBind not implemented")
 }
 func (UnimplementedGameAPIServer) mustEmbedUnimplementedGameAPIServer() {}
 func (UnimplementedGameAPIServer) testEmbeddedByValue()                 {}
@@ -86,6 +118,24 @@ func RegisterGameAPIServer(s grpc.ServiceRegistrar, srv GameAPIServer) {
 	s.RegisterService(&GameAPI_ServiceDesc, srv)
 }
 
+func _GameAPI_WorldBackup_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BackupRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GameAPIServer).WorldBackup(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GameAPI_WorldBackup_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GameAPIServer).WorldBackup(ctx, req.(*BackupRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _GameAPI_SendCmd_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(CmdRequest)
 	if err := dec(in); err != nil {
@@ -104,6 +154,24 @@ func _GameAPI_SendCmd_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GameAPI_GameBind_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BindRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GameAPIServer).GameBind(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: GameAPI_GameBind_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GameAPIServer).GameBind(ctx, req.(*BindRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // GameAPI_ServiceDesc is the grpc.ServiceDesc for GameAPI service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -112,10 +180,18 @@ var GameAPI_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*GameAPIServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "WorldBackup",
+			Handler:    _GameAPI_WorldBackup_Handler,
+		},
+		{
 			MethodName: "SendCmd",
 			Handler:    _GameAPI_SendCmd_Handler,
 		},
+		{
+			MethodName: "GameBind",
+			Handler:    _GameAPI_GameBind_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "game_api.proto",
+	Metadata: "gameapi.proto",
 }

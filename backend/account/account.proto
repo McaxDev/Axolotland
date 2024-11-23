@@ -5,24 +5,24 @@ package account;
 option go_package = "./rpc/;rpc";
 
 service Account {
-	rpc VerifyJwt (JwtRequest) returns (JwtResponse);
+	rpc UpdateJWT (JWT) returns (JWT);
+	rpc GetUserinfo (JWT) returns (Userinfo);
 }
 
-message JwtRequest {
+message JWT {
 	string JWT = 1;
 }
 
-message JwtResponse {
-	string JWT = 1;
-	string Username = 2;
-	string Avatar = 3;
-	string Profile = 4;
-	bool Admin = 5;
-	int32 Money = 6;
-	int32 Setting = 7;
+message Userinfo {
+	string Username = 1;
+	string Avatar = 2;
+	string Profile = 3;
+	bool Admin = 4;
+	int32 Money = 5;
+	int64 Checkin = 6;
+	int64 Setting = 7;
 	string Email = 8;
 	string Telephone = 9;
 	string BedrockName = 10;
-	string JaveName = 11;
-	string DstName = 12;
+	string JavaName = 11;
 }

@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package GameAPI;
+
+option go_package = "./rpc/;rpc";
+
+service GameAPI {
+  rpc WorldBackup (BackupRequest) returns (BackupResponse);
+	rpc SendCmd (CmdRequest) returns (CmdResponse);
+	rpc GameBind (BindRequest) returns (BindResponse);
+}
+
+message BackupRequest {
+	string server = 1;
+}
+
+message BackupResponse {
+	bool success = 1;
+}
+
+message CmdRequest {
+	string server = 1;
+	string command = 2;
+	bool admin = 3;
+}
+
+message CmdResponse {
+	string response = 1;
+}
+
+message BindRequest {
+	string server = 1;
+	string player = 2;
+	string authcode = 3;
+}
+
+message BindResponse {
+	bool success = 1;
+}

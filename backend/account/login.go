@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
+	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"github.com/McaxDev/Axolotland/backend/utils"
-	"github.com/McaxDev/Axolotland/backend/verification/rpc"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
@@ -23,7 +23,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	captchaResponse, err := VerifyClient.VerifyCode(
+	captchaResponse, err := AuthClient.Auth(
 		context.Background(), &rpc.Request{
 			Codetype: "captcha",
 			Number:   request.CaptchaID,

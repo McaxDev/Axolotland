@@ -35,13 +35,13 @@ func CreateFolder(path string) error {
 }
 
 // 根据服务器代号找到服务器
-func GetServerByName(name string) *Server {
+func GetServerByName(name string) (*Server, error) {
 
 	for index := range Servers {
 		if temp := &Servers[index]; temp.Name == name {
-			return temp
+			return temp, nil
 		}
 	}
 
-	return nil
+	return nil, fmt.Errorf("没有这个服务器: %s\v", name)
 }

@@ -26,7 +26,6 @@ func GetUserInfo(user *User, c *gin.Context) {
 		"telephone":   user.Telephone,
 		"bedrockName": user.BedrockName,
 		"javaName":    user.JavaName,
-		"dstName":     user.DstName,
 	}))
 }
 

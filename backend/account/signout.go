@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
+	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"github.com/McaxDev/Axolotland/backend/utils"
-	"github.com/McaxDev/Axolotland/backend/verification/rpc"
 	"github.com/gin-gonic/gin"
 )
 
@@ -16,7 +16,7 @@ func Signout(user *User, c *gin.Context) {
 		return
 	}
 
-	response, err := VerifyClient.VerifyCode(
+	response, err := AuthClient.Auth(
 		context.Background(), &request,
 	)
 	if err != nil || !response.Success {

@@ -1,19 +1,62 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"time"
 
+	"github.com/McaxDev/Axolotland/backend/account/rpc"
 	"github.com/golang-jwt/jwt/v5"
 	"gorm.io/gorm"
 )
 
+func (s *RPCServer) UpdateJWT(
+	c context.Context, r *rpc.JWT,
+) (*rpc.JWT, error) {
+
+	user, err := GetUser(r.JWT)
+	if err != nil {
+		return nil, err
+	}
+
+	newToken, err := GetJwt(user.ID)
+	if err != nil {
+		return nil, err
+	}
+
+	return &rpc.JWT{JWT: newToken}, err
+}
+
+func (s *RPCServer) GetUserinfo(
+	c context.Context, r *rpc.JWT,
+) (*rpc.Userinfo, error) {
+
+	user, err := GetUser(r.JWT)
+	if err != nil {
+		return nil, err
+	}
+
+	return &rpc.Userinfo{
+		Username:    user.Username,
+		Avatar:      user.Avatar,
+		Profile:     user.Profile,
+		Admin:       user.Admin,
+		Money:       int32(user.Money),
+		Email:       user.Email,
+		Telephone:   user.Telephone,
+		BedrockName: user.BedrockName,
+		JavaName:    user.JavaName,
+	}, nil
+}
+
 func GetJwt(userId uint) (string, error) {
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"userId": userId,
-		"exp":    time.Now().Add(24 * time.Hour).Unix(),
-	}).SignedString([]byte(Config.JwtKey))
+	token, err := jwt.NewWithClaims(
+		jwt.SigningMethodHS256,
+		jwt.MapClaims{
+			"userId": userId,
+			"exp":    time.Now().Add(24 * time.Hour).Unix(),
+		}).SignedString([]byte(Config.JwtKey))
 	return "Bearer " + token, err
 }
 

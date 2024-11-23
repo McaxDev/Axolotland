@@ -1,11 +1,30 @@
 package main
 
 import (
+	"context"
 	"os"
 	"path/filepath"
 	"sort"
 	"time"
+
+	"github.com/McaxDev/Axolotland/backend/gameapi/rpc"
 )
+
+func (s *RPCServer) WorldBackup(
+	c context.Context, r *rpc.BackupRequest,
+) (*rpc.BackupResponse, error) {
+
+	server, err := GetServerByName(r.Server)
+	if err != nil {
+		return &rpc.BackupResponse{Success: false}, err
+	}
+
+	if err := server.WorldBackup(); err != nil {
+		return &rpc.BackupResponse{Success: false}, err
+	}
+
+	return &rpc.BackupResponse{Success: true}, nil
+}
 
 // 备份游戏服务器的存档
 func (server *Server) WorldBackup() error {
