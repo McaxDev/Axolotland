@@ -5,15 +5,22 @@ package auth;
 option go_package = "./rpc/;rpc";
 
 service Auth {
-	rpc Auth (Request) returns (Response);
+	rpc Auth (Authcode) returns (Boolean);
+	rpc Promote (Message) returns (Empty);
 }
 
-message Request {
+message Authcode {
 	string codetype = 1;
-	string number = 2;
-	string authcode = 3;
+	Message msg = 2;
 }
 
-message Response {
-	bool success = 1;
+message Message {
+	string number = 1;
+	string content = 2;
 }
+
+message Boolean {
+	bool data = 1;
+}
+
+message Empty {}

@@ -4,40 +4,27 @@ import (
 	"os"
 )
 
-type Config struct {
+var config struct {
 	GrpcPort  string
 	HttpPort  string
 	GeoServer string
-	SMS       SmsConfig
-	SMTP      SmtpConfig
-}
-
-type SmsConfig struct {
-	ID        string
-	Secret    string
-	Signature string
-	Template  string
-}
-
-type SmtpConfig struct {
-	Server   string
-	Port     string
-	Mail     string
-	Password string
-}
-
-var config Config
-
-func GetConfig() {
-	var exist bool
-	config.GrpcPort, exist = os.LookupEnv("GRPC_PORT")
-	if !exist {
-		config.GrpcPort = "50051"
+	SMS       struct {
+		ID        string
+		Secret    string
+		Signature string
+		Template  string
 	}
-	config.HttpPort, exist = os.LookupEnv("HTTP_PORT")
-	if !exist {
-		config.HttpPort = "8080"
+	SMTP struct {
+		Server   string
+		Port     string
+		Mail     string
+		Password string
 	}
+}
+
+func LoadConfig() {
+	config.GrpcPort = os.Getenv("GRPC_PORT")
+	config.HttpPort = os.Getenv("HTTP_PORT")
 	config.GeoServer = os.Getenv("GEO_SERVER")
 	config.SMS.ID = os.Getenv("SMS_ID")
 	config.SMS.Secret = os.Getenv("SMS_SECRET")

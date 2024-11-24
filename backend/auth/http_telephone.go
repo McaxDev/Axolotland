@@ -5,18 +5,13 @@ import (
 
 	"github.com/McaxDev/Axolotland/backend/utils"
 	unisms "github.com/apistd/uni-go-sdk/sms"
+	"github.com/gin-gonic/gin"
 )
 
-var smsSent = make(map[string]smsSentValue)
+func SendTelephone(c *gin.Context) {
 
-type smsSentValue struct {
-	AuthCode string
-	Expiry   time.Time
-}
-
-func SendSMS(telephone string) error {
+	telephone := c.Param("number")
 	authcode := utils.RandomCode(6)
-	client := unisms.NewClient(config.SMS.ID, config.SMS.Secret)
 
 	message := unisms.BuildMessage()
 	message.SetTo(telephone)
@@ -27,15 +22,16 @@ func SendSMS(telephone string) error {
 		"ttl":  "10",
 	})
 
-	_, err := client.Send(message)
+	_, err := SMSClient.Send(message)
 	if err != nil {
-		return err
+		c.JSON(500, utils.Resp("短信发送失败", nil))
+		return
 	}
 
-	smsSent[telephone] = smsSentValue{
-		AuthCode: authcode,
+	TelephoneSent[telephone] = MsgSentValue{
+		Authcode: authcode,
 		Expiry:   time.Now().Add(10 * time.Minute),
 	}
 
-	return nil
+	c.JSON(200, utils.Resp("验证码发送成功", nil))
 }

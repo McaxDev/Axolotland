@@ -5,35 +5,41 @@ package GameAPI;
 option go_package = "./rpc/;rpc";
 
 service GameAPI {
-  rpc WorldBackup (BackupRequest) returns (BackupResponse);
-	rpc SendCmd (CmdRequest) returns (CmdResponse);
-	rpc GameBind (BindRequest) returns (BindResponse);
+  rpc WorldBackup (Server) returns (Boolean);
+	rpc SendCmd (CmdReq) returns (String);
+	rpc GameBind (BindReq) returns (Boolean);
+	rpc LoadJSON (SrvAndPath) returns (ByteSlice);
 }
 
-message BackupRequest {
-	string server = 1;
+message Server {
+	string data = 1;
 }
 
-message BackupResponse {
-	bool success = 1;
-}
-
-message CmdRequest {
+message CmdReq {
 	string server = 1;
 	string command = 2;
 	bool admin = 3;
 }
 
-message CmdResponse {
-	string response = 1;
-}
-
-message BindRequest {
+message BindReq {
 	string server = 1;
 	string player = 2;
 	string authcode = 3;
 }
 
-message BindResponse {
-	bool success = 1;
+message SrvAndPath {
+	string server = 1;
+	string path = 2;
+}
+
+message String {
+	string data = 1;
+}
+
+message Boolean {
+	bool data = 1;
+}
+
+message ByteSlice {
+	bytes data = 1;
 }

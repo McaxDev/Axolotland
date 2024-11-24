@@ -19,14 +19,16 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Auth_Auth_FullMethodName = "/auth.Auth/Auth"
+	Auth_Auth_FullMethodName    = "/auth.Auth/Auth"
+	Auth_Promote_FullMethodName = "/auth.Auth/Promote"
 )
 
 // AuthClient is the client API for Auth service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
-	Auth(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error)
+	Auth(ctx context.Context, in *Authcode, opts ...grpc.CallOption) (*Boolean, error)
+	Promote(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type authClient struct {
@@ -37,10 +39,20 @@ func NewAuthClient(cc grpc.ClientConnInterface) AuthClient {
 	return &authClient{cc}
 }
 
-func (c *authClient) Auth(ctx context.Context, in *Request, opts ...grpc.CallOption) (*Response, error) {
+func (c *authClient) Auth(ctx context.Context, in *Authcode, opts ...grpc.CallOption) (*Boolean, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(Response)
+	out := new(Boolean)
 	err := c.cc.Invoke(ctx, Auth_Auth_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *authClient) Promote(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, Auth_Promote_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +63,8 @@ func (c *authClient) Auth(ctx context.Context, in *Request, opts ...grpc.CallOpt
 // All implementations must embed UnimplementedAuthServer
 // for forward compatibility.
 type AuthServer interface {
-	Auth(context.Context, *Request) (*Response, error)
+	Auth(context.Context, *Authcode) (*Boolean, error)
+	Promote(context.Context, *Message) (*Empty, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -62,8 +75,11 @@ type AuthServer interface {
 // pointer dereference when methods are called.
 type UnimplementedAuthServer struct{}
 
-func (UnimplementedAuthServer) Auth(context.Context, *Request) (*Response, error) {
+func (UnimplementedAuthServer) Auth(context.Context, *Authcode) (*Boolean, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Auth not implemented")
+}
+func (UnimplementedAuthServer) Promote(context.Context, *Message) (*Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Promote not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
 func (UnimplementedAuthServer) testEmbeddedByValue()              {}
@@ -87,7 +103,7 @@ func RegisterAuthServer(s grpc.ServiceRegistrar, srv AuthServer) {
 }
 
 func _Auth_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Request)
+	in := new(Authcode)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +115,25 @@ func _Auth_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface
 		FullMethod: Auth_Auth_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Auth(ctx, req.(*Request))
+		return srv.(AuthServer).Auth(ctx, req.(*Authcode))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Auth_Promote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Message)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServer).Promote(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Auth_Promote_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServer).Promote(ctx, req.(*Message))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -114,6 +148,10 @@ var Auth_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Auth",
 			Handler:    _Auth_Auth_Handler,
+		},
+		{
+			MethodName: "Promote",
+			Handler:    _Auth_Promote_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
