@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"net/smtp"
 	"time"
@@ -24,7 +25,18 @@ func AuthCode(number, authcode string, data MsgSent) (bool, error) {
 	return true, nil
 }
 
-func SendEmail(email string, content []byte) error {
+func SendEmail(email, title string, content []byte) error {
+
+	var buffer bytes.Buffer
+	buffer.Write([]byte(
+		"From: Axolotland Gaming Club <axolotland@163.com>\r\n" +
+			"To: " + email + "\r\n" +
+			"Subject: " + title + "\r\n" +
+			"MIME-Version: 1.0\r\n" +
+			"Content-Type: text/html; charset=\"UTF-8\"\r\n" +
+			"\r\n",
+	))
+	buffer.Write(content)
 
 	if err := smtp.SendMail(
 		config.SMTP.Server+":"+config.SMTP.Port,
@@ -35,9 +47,19 @@ func SendEmail(email string, content []byte) error {
 		),
 		config.SMTP.Mail,
 		[]string{email},
-		content,
+		buffer.Bytes(),
 	); err != nil {
 		return err
 	}
 	return nil
+}
+
+func ClearSent(datas ...MsgSent) {
+	for _, data := range datas {
+		for key, value := range data {
+			if time.Now().After(value.Expiry) {
+				delete(data, key)
+			}
+		}
+	}
 }

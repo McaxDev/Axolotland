@@ -10,7 +10,6 @@ replace (
 require (
 	github.com/McaxDev/Axolotland/backend/auth v0.0.0-00010101000000-000000000000
 	github.com/McaxDev/Axolotland/backend/utils v0.0.0-20241121200645-a92c3feebf39
-	github.com/McaxDev/Axolotland/backend/verification v0.0.0-20241030032851-0d1e5b7a0a85
 	github.com/gin-gonic/gin v1.10.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	google.golang.org/grpc v1.68.0

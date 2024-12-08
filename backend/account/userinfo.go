@@ -23,6 +23,7 @@ func GetUserInfo(user *User, c *gin.Context) {
 		"admin":       user.Admin,
 		"money":       user.Money,
 		"email":       user.Email,
+		"qq":          user.QQ,
 		"telephone":   user.Telephone,
 		"bedrockName": user.BedrockName,
 		"javaName":    user.JavaName,

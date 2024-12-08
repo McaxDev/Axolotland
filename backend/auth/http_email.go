@@ -9,13 +9,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type MailData struct {
-	Email    string
-	Authcode string
-	Expiry   string
-	Location string
-}
-
 func SendEmailCode(c *gin.Context) {
 
 	email := c.Param("number")
@@ -40,26 +33,22 @@ func SendEmailCode(c *gin.Context) {
 	}
 
 	var buffer bytes.Buffer
-	buffer.Write([]byte(
-		"From: Axolotland Gaming Club <axolotland@163.com>\r\n" +
-			"To: " + email + "\r\n" +
-			"Subject: 验证码邮件\r\n" +
-			"MIME-Version: 1.0\r\n" +
-			"Content-Type: text/html; charset=\"UTF-8\"\r\n" +
-			"\r\n",
-	))
-
-	if err := tmpl.Execute(&buffer, &MailData{
+	if err := tmpl.Execute(&buffer, &struct {
+		Email    string
+		Authcode string
+		Expiry   string
+		Location string
+	}{
 		Email:    email,
 		Authcode: authcode,
-		Expiry:   expiry.Format("2006-01-02 15:04"),
+		Expiry:   expiry.Format("2006-01-02 15:04:05"),
 		Location: region,
 	}); err != nil {
 		c.JSON(500, utils.Resp("生成邮件失败", err))
 		return
 	}
 
-	if err := SendEmail(email, buffer.Bytes()); err != nil {
+	if err := SendEmail(email, "验证码邮件", buffer.Bytes()); err != nil {
 		c.JSON(500, utils.Resp("邮件发送失败", err))
 		return
 	}

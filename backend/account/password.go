@@ -24,13 +24,13 @@ func ResetPassword(c *gin.Context) {
 
 	response, err := AuthClient.Auth(
 		context.Background(),
-		&rpc.Request{
+		&rpc.Authcode{
 			Codetype: request.Codetype,
 			Number:   request.Number,
 			Authcode: request.Authcode,
 		},
 	)
-	if err != nil || !response.Success {
+	if err != nil || !response.Data {
 		c.JSON(400, utils.Resp("验证失败", err))
 		return
 	}

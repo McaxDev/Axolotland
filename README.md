@@ -33,25 +33,14 @@
     "data": 可能是任何类型
 }
 ```
-#### 注册 POST
-* 路径：`/account/signup`
-* 请求体：
+* 如果一个接口没有提及响应体，那么响应体一般是：
 ```json
 {
-    "Username": "Nerakolo",
-    "Password": "9aosy3094j82j4ct9",
-    "Email": "nerakolo@outlook.com",
-    "EmailCode": "114514",
-    "CaptchaID": "j20934yt0909234t8",
-    "CaptchaValue": "114514"
+    "message": "请求成功/请求失败：原因",
+    "data": null
 }
 ```
-* 响应体data部分：
-```json
-{
-    "token": "Bearer 432f5.342f52.234vf523"
-}
-```
+* 如果一个接口没有提及请求体，那么一般不需要请求体。
 #### 注销账号 POST
 * 路径：`/account/signout`
 * 请求头带JWT
@@ -63,22 +52,23 @@
     "Authcode": "收到的验证码"
 }
 ```
-#### 登录 POST
+#### 登录或注册 POST
 * 路径：`/account/login`
 * 请求体：
 ```json
 {
-    "Username": "Nerakolo",
-    "Password": "9aosy3094j82j4ct9",
-    "CaptchaID": "j20934yt0909234t8",
-    "CaptchaValue": "114514"
+    "Account": "邮箱/手机号/用户名",
+    "Authcode": "邮箱或手机号的验证码",
+    "Password": "用户密码",
+    "CaptchaID": "人机验证ID",
+    "CaptchaValue": "人机验证码"
 }
 ```
+* Authcode和Password提供任意一个即可，据此来判断使用密码或者验证码登录。
+* 使用验证码登录时，如果用户不存在，则自动注册。
 * 响应体data部分：
 ```json
-{
-    "token": "Bearer 432f5.342f52.234vf523"
-}
+"Bearer 432f5.342f52.234vf523"
 ```
 #### 获取用户信息 GET
 * 路径：`/account/get/userinfo`

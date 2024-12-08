@@ -7,9 +7,9 @@ import (
 )
 
 func (s *RPCServer) Promote(
-	c context.Context, r *rpc.Message,
+	c context.Context, r *rpc.Email,
 ) (*rpc.Empty, error) {
 	return new(rpc.Empty), SendEmail(
-		r.Number, []byte(r.Content),
+		r.Receiver, r.Title, []byte(r.Content),
 	)
 }

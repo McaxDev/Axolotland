@@ -23,6 +23,7 @@ message Userinfo {
 	int64 Setting = 7;
 	string Email = 8;
 	string Telephone = 9;
-	string BedrockName = 10;
-	string JavaName = 11;
+	string QQ = 10;
+	string BedrockName = 11;
+	string JavaName = 12;
 }

@@ -8,16 +8,16 @@ service GameAPI {
   rpc WorldBackup (Server) returns (Boolean);
 	rpc SendCmd (CmdReq) returns (String);
 	rpc GameBind (BindReq) returns (Boolean);
-	rpc LoadJSON (SrvAndPath) returns (ByteSlice);
+	rpc LoadJSON (SrvAndFile) returns (ByteSlice);
 }
 
 message Server {
-	string data = 1;
+	string name = 1;
 }
 
 message CmdReq {
 	string server = 1;
-	string command = 2;
+	string cmd = 2;
 	bool admin = 3;
 }
 
@@ -27,9 +27,9 @@ message BindReq {
 	string authcode = 3;
 }
 
-message SrvAndPath {
+message SrvAndFile {
 	string server = 1;
-	string path = 2;
+	string filepath = 2;
 }
 
 message String {

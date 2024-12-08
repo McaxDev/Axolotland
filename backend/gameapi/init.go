@@ -8,12 +8,14 @@ import (
 	"github.com/McaxDev/Axolotland/backend/utils"
 	"github.com/docker/docker/client"
 	"github.com/mholt/archiver/v3"
+	"gorm.io/gorm"
 )
 
 var (
 	DockerClient *client.Client
 	Compressor   *archiver.TarGz
 	BindCodes    map[string]BindCodesValue
+	DB           *gorm.DB
 )
 
 type BindCodesValue struct {

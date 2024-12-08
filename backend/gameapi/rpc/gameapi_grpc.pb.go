@@ -32,7 +32,7 @@ type GameAPIClient interface {
 	WorldBackup(ctx context.Context, in *Server, opts ...grpc.CallOption) (*Boolean, error)
 	SendCmd(ctx context.Context, in *CmdReq, opts ...grpc.CallOption) (*String, error)
 	GameBind(ctx context.Context, in *BindReq, opts ...grpc.CallOption) (*Boolean, error)
-	LoadJSON(ctx context.Context, in *SrvAndPath, opts ...grpc.CallOption) (*ByteSlice, error)
+	LoadJSON(ctx context.Context, in *SrvAndFile, opts ...grpc.CallOption) (*ByteSlice, error)
 }
 
 type gameAPIClient struct {
@@ -73,7 +73,7 @@ func (c *gameAPIClient) GameBind(ctx context.Context, in *BindReq, opts ...grpc.
 	return out, nil
 }
 
-func (c *gameAPIClient) LoadJSON(ctx context.Context, in *SrvAndPath, opts ...grpc.CallOption) (*ByteSlice, error) {
+func (c *gameAPIClient) LoadJSON(ctx context.Context, in *SrvAndFile, opts ...grpc.CallOption) (*ByteSlice, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ByteSlice)
 	err := c.cc.Invoke(ctx, GameAPI_LoadJSON_FullMethodName, in, out, cOpts...)
@@ -90,7 +90,7 @@ type GameAPIServer interface {
 	WorldBackup(context.Context, *Server) (*Boolean, error)
 	SendCmd(context.Context, *CmdReq) (*String, error)
 	GameBind(context.Context, *BindReq) (*Boolean, error)
-	LoadJSON(context.Context, *SrvAndPath) (*ByteSlice, error)
+	LoadJSON(context.Context, *SrvAndFile) (*ByteSlice, error)
 	mustEmbedUnimplementedGameAPIServer()
 }
 
@@ -110,7 +110,7 @@ func (UnimplementedGameAPIServer) SendCmd(context.Context, *CmdReq) (*String, er
 func (UnimplementedGameAPIServer) GameBind(context.Context, *BindReq) (*Boolean, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GameBind not implemented")
 }
-func (UnimplementedGameAPIServer) LoadJSON(context.Context, *SrvAndPath) (*ByteSlice, error) {
+func (UnimplementedGameAPIServer) LoadJSON(context.Context, *SrvAndFile) (*ByteSlice, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method LoadJSON not implemented")
 }
 func (UnimplementedGameAPIServer) mustEmbedUnimplementedGameAPIServer() {}
@@ -189,7 +189,7 @@ func _GameAPI_GameBind_Handler(srv interface{}, ctx context.Context, dec func(in
 }
 
 func _GameAPI_LoadJSON_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SrvAndPath)
+	in := new(SrvAndFile)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -201,7 +201,7 @@ func _GameAPI_LoadJSON_Handler(srv interface{}, ctx context.Context, dec func(in
 		FullMethod: GameAPI_LoadJSON_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GameAPIServer).LoadJSON(ctx, req.(*SrvAndPath))
+		return srv.(GameAPIServer).LoadJSON(ctx, req.(*SrvAndFile))
 	}
 	return interceptor(ctx, in, info, handler)
 }

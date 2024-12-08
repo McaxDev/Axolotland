@@ -28,7 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type AuthClient interface {
 	Auth(ctx context.Context, in *Authcode, opts ...grpc.CallOption) (*Boolean, error)
-	Promote(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error)
+	Promote(ctx context.Context, in *Email, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type authClient struct {
@@ -49,7 +49,7 @@ func (c *authClient) Auth(ctx context.Context, in *Authcode, opts ...grpc.CallOp
 	return out, nil
 }
 
-func (c *authClient) Promote(ctx context.Context, in *Message, opts ...grpc.CallOption) (*Empty, error) {
+func (c *authClient) Promote(ctx context.Context, in *Email, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
 	err := c.cc.Invoke(ctx, Auth_Promote_FullMethodName, in, out, cOpts...)
@@ -64,7 +64,7 @@ func (c *authClient) Promote(ctx context.Context, in *Message, opts ...grpc.Call
 // for forward compatibility.
 type AuthServer interface {
 	Auth(context.Context, *Authcode) (*Boolean, error)
-	Promote(context.Context, *Message) (*Empty, error)
+	Promote(context.Context, *Email) (*Empty, error)
 	mustEmbedUnimplementedAuthServer()
 }
 
@@ -78,7 +78,7 @@ type UnimplementedAuthServer struct{}
 func (UnimplementedAuthServer) Auth(context.Context, *Authcode) (*Boolean, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Auth not implemented")
 }
-func (UnimplementedAuthServer) Promote(context.Context, *Message) (*Empty, error) {
+func (UnimplementedAuthServer) Promote(context.Context, *Email) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Promote not implemented")
 }
 func (UnimplementedAuthServer) mustEmbedUnimplementedAuthServer() {}
@@ -121,7 +121,7 @@ func _Auth_Auth_Handler(srv interface{}, ctx context.Context, dec func(interface
 }
 
 func _Auth_Promote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Message)
+	in := new(Email)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -133,7 +133,7 @@ func _Auth_Promote_Handler(srv interface{}, ctx context.Context, dec func(interf
 		FullMethod: Auth_Promote_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuthServer).Promote(ctx, req.(*Message))
+		return srv.(AuthServer).Promote(ctx, req.(*Email))
 	}
 	return interceptor(ctx, in, info, handler)
 }

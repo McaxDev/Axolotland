@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net"
+	"time"
 
 	"github.com/McaxDev/Axolotland/backend/auth/rpc"
 	"github.com/gin-gonic/gin"
@@ -12,6 +13,12 @@ import (
 func main() {
 
 	Init()
+
+	ticker := time.NewTicker(10 * time.Minute)
+	defer ticker.Stop()
+	go func() {
+		ClearSent(EmailSent, TelephoneSent, QQSent)
+	}()
 
 	lis, err := net.Listen("tcp", ":"+config.GrpcPort)
 	if err != nil {
@@ -29,6 +36,7 @@ func main() {
 	r.GET("/captcha", SendCaptcha)
 	r.GET("/email/:number", SendEmailCode)
 	r.GET("/telephone/:number", SendTelephone)
+	r.GET("/qq/:number", SendQQCode)
 	if err := r.Run(":" + config.HttpPort); err != nil {
 		log.Fatalln("failed to run http server: " + err.Error())
 	}

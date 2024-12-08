@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"io"
 
@@ -9,50 +8,54 @@ import (
 	"github.com/docker/docker/api/types/container"
 )
 
-func (s *RPCServer) SendCmd(
-	c context.Context, r *rpc.CmdRequest,
-) (*rpc.CmdResponse, error) {
-
-	server, err := GetServerByName(r.Server)
-	if err != nil {
-		return &rpc.CmdResponse{Response: ""}, err
-	}
-
-	response, err := server.SendCmd(c, r.Command)
-	if err != nil {
-		return &rpc.CmdResponse{Response: ""}, err
-	}
-
-	return &rpc.CmdResponse{Response: response}, nil
-}
-
 // 向容器的程序发送命令
 func (server *Server) SendCmd(
 	ctx context.Context, command string,
 ) (string, error) {
 
-	// 附加到容器
-	response, err := DockerClient.ContainerAttach(
-		ctx, server.Name, container.AttachOptions{
-			Stream: true, Stdin: true, Stdout: true, Stderr: true,
+	execute, err := DockerClient.ContainerExecCreate(
+		ctx, server.Name, container.ExecOptions{
+			Cmd:          []string{command},
+			AttachStdout: true,
+			AttachStderr: true,
+			Tty:          true,
 		},
+	)
+	if err != nil {
+		return "", err
+	}
+
+	response, err := DockerClient.ContainerExecAttach(
+		ctx, execute.ID, container.ExecStartOptions{Tty: true},
 	)
 	if err != nil {
 		return "", err
 	}
 	defer response.Close()
 
-	// 发送命令
-	_, err = response.Conn.Write([]byte(command))
+	data, err := io.ReadAll(response.Reader)
 	if err != nil {
 		return "", err
 	}
 
-	// 读取响应
-	var message bytes.Buffer
-	_, err = io.Copy(&message, response.Reader)
-	if err != nil {
-		return "", err
+	return string(data), nil
+}
+
+func (s *RPCServer) SendCmd(
+	c context.Context, r *rpc.CmdReq,
+) (*rpc.String, error) {
+
+	var server Server
+	if err := DB.First(
+		&server, "name = ?", r.Server,
+	).Error; err != nil {
+		return new(rpc.String), err
 	}
-	return message.String(), nil
+
+	response, err := server.SendCmd(c, r.Cmd)
+	if err != nil {
+		return new(rpc.String), err
+	}
+
+	return &rpc.String{Data: response}, nil
 }

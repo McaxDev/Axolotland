@@ -8,31 +8,22 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetContact(user *User, c *gin.Context) {
+func BindAuth(user *User, c *gin.Context) {
 
-	var request struct {
-		Type     string
-		Number   string
-		Authcode string
-	}
+	var request rpc.Authcode
 
 	response, err := AuthClient.Auth(
-		context.Background(),
-		&rpc.Request{
-			Codetype: request.Type,
-			Number:   request.Number,
-			Authcode: request.Authcode,
-		},
+		context.Background(), &request,
 	)
 
-	if err != nil || !response.Success {
+	if err != nil || !response.Data {
 		c.JSON(400, utils.Resp("号码验证失败", err))
 		return
 	}
 
 	query := DB.Model(&user)
 
-	if request.Type == "telephone" {
+	if request.Codetype == "telephone" {
 		query = query.Update("Telephone", request.Number)
 	} else {
 		query = query.Update("Email", request.Number)

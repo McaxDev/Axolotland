@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -31,7 +32,7 @@ func InitDB() error {
 
 type User struct {
 	gorm.Model
-	Username    string
+	Name        string
 	Password    string
 	Avatar      string
 	Profile     string
@@ -40,7 +41,15 @@ type User struct {
 	Checkin     int64
 	Setting     int64
 	Email       string
-	Telephone   string
+	Phone       string
+	QQ          string
 	BedrockName string
 	JavaName    string
+}
+
+type BlackList struct {
+	gorm.Model
+	Type   string
+	Value  string
+	Expiry time.Time
 }

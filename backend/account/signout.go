@@ -10,7 +10,7 @@ import (
 
 func Signout(user *User, c *gin.Context) {
 
-	var request rpc.Request
+	var request rpc.Authcode
 	if err := c.BindJSON(&request); err != nil {
 		c.JSON(400, utils.Resp("用户请求有误", err))
 		return
@@ -19,7 +19,7 @@ func Signout(user *User, c *gin.Context) {
 	response, err := AuthClient.Auth(
 		context.Background(), &request,
 	)
-	if err != nil || !response.Success {
+	if err != nil || !response.Data {
 		c.JSON(400, utils.Resp("联系方式验证失败", err))
 		return
 	}

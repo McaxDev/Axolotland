@@ -17,5 +17,4 @@ func SendCaptcha(c *gin.Context) {
 		c.JSON(500, utils.Resp("验证码绘制失败", nil))
 		return
 	}
-
 }
